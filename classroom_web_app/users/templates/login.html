@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Login - ClassConnect{% endblock %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-50 to-white">
+    <div class="bg-white shadow-xl rounded-lg p-8 w-full max-w-md">
+        <h2 class="text-3xl font-bold text-custom-purple mb-6 text-center">Welcome Back</h2>
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                <input type="text" name="username" id="username" required
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-custom-purple focus:border-custom-purple">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" name="password" id="password" required
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-custom-purple focus:border-custom-purple">
+            </div>
+            <div>
+                <button type="submit"
+                    class="w-full bg-custom-purple text-white px-4 py-2 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom-purple">
+                    Login
+                </button>
+            </div>
+        </form>
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">Don't have an account?
+                <a href="{% url 'register' %}" class="font-medium text-custom-purple hover:text-purple-700">Register here</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

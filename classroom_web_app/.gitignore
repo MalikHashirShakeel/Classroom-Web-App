@@ -1,0 +1,29 @@
+# 🔹 Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# 🔹 Ignore environment files
+env/
+venv/
+*.env
+
+# 🔹 Ignore database & migrations
+db.sqlite3
+*.db
+migrations/
+
+# 🔹 Ignore compiled code
+*.pyc
+*.pyo
+*.pyd
+*.swp
+
+# 🔹 Ignore IDE & system files
+.vscode/
+.idea/
+.DS_Store
+
+# 🔹 Ignore static & media files (if generated dynamically)
+staticfiles/
+media/
