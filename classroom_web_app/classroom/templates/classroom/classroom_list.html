@@ -12,7 +12,7 @@
             class="bg-custom-purple text-white px-5 py-3 rounded-lg hover:bg-purple-700 transition shadow-md">
                 + Create Classroom
             </a>
-            <a href="#" 
+            <a href="{% url 'join_classroom' %}" 
             class="bg-gray-300 text-gray-800 px-5 py-3 rounded-lg hover:bg-gray-400 transition shadow-md">
                 ➕ Join Classroom
             </a>
@@ -52,7 +52,7 @@
                             </div>
 
                             <!-- View Classroom Button -->
-                            <a href="#" class="block mt-6 text-white bg-gradient-to-r from-custom-purple to-purple-600 px-4 py-2 rounded-lg text-center hover:from-purple-600 hover:to-custom-purple transition-all shadow-md">
+                            <a href="#" class="block mt-6 text-gray-500 bg-gradient-to-r from-custom-purple to-purple-600 px-4 py-2 rounded-lg text-center hover:from-purple-600 hover:to-custom-purple transition-all shadow-md">
                                 View Classroom
                             </a>
                         </div>
@@ -103,8 +103,8 @@
                             </div>
 
                             <!-- View Classroom Button -->
-                            <a href="{% url 'classroom_detail' classroom.id %}" 
-                            class="block mt-6 text-white bg-gradient-to-r from-custom-purple to-purple-600 px-4 py-2 rounded-lg text-center hover:from-purple-600 hover:to-custom-purple transition-all shadow-md">
+                            <a href="#" 
+                            class="block mt-6 text-gray-500 bg-gradient-to-r from-custom-purple to-purple-600 px-4 py-2 rounded-lg text-center hover:from-purple-600 hover:to-custom-purple transition-all shadow-md">
                                 View Classroom
                             </a>
                         </div>

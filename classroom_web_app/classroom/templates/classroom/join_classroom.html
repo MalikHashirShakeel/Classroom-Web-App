@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Join Classroom - ClassConnect{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-r from-purple-50 to-white py-10 px-5">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-custom-purple text-center mb-8">Join a Classroom</h1>
+
+        <div class="bg-white p-8 rounded-xl shadow-lg">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-6">
+                    <label for="id_class_code" class="block text-gray-700 font-semibold mb-2">Class Code</label>
+                    <input type="text" name="class_code" id="id_class_code" 
+                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-purple" 
+                           placeholder="Enter Class Code" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" 
+                            class="bg-gradient-to-r from-custom-purple to-purple-600 text-gray-500 px-6 py-3 rounded-lg hover:from-purple-600 hover:to-custom-purple transition-all shadow-md">
+                        Join Classroom
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
