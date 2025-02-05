@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Classroom, Enrollment
+from .forms import ClassroomForm
 
 @login_required
 def classroom_list(request):
@@ -13,3 +14,21 @@ def classroom_list(request):
         'enrolled_classrooms': enrolled_classrooms,
     }
     return render(request, 'classroom/classroom_list.html', context)
+
+@login_required
+def create_classroom(request):
+    """View to create a new classroom."""
+    if request.method == 'POST':
+        form = ClassroomForm(request.POST)
+        if form.is_valid():
+            classroom = form.save(commit=False)
+            classroom.created_by = request.user
+            classroom.save()
+            return redirect('classroom_list')
+    else:
+        form = ClassroomForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'classroom/create_classroom.html', context)

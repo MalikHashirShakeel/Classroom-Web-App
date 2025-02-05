@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Create Classroom - ClassConnect{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-r from-purple-50 to-white py-10 px-5">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-custom-purple text-center mb-8">Create a New Classroom</h1>
+
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-6">
+                    <label for="id_name" class="block text-gray-700 font-semibold mb-2">Classroom Name</label>
+                    {{ form.name }}
+                </div>
+                <div class="mb-6">
+                    <label for="id_class_code" class="block text-gray-700 font-semibold mb-2">Class Code</label>
+                    {{ form.class_code }}
+                    <p class="text-gray-500 text-sm mt-2">This code will be used by students to join your classroom.</p>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-custom-purple text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition shadow-md">
+                        Create Classroom
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

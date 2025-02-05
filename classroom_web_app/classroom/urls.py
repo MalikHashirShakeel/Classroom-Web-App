@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.classroom_list, name='classroom_list'),  # View all classrooms
-    # path('create/', views.create_classroom, name='create_classroom'),  # Create a new class
+    path('create/', views.create_classroom, name='create_classroom'),  # Create a new class
     # path('<int:classroom_id>/', views.classroom_detail, name='classroom_detail'),  # View class details
     # path('<int:classroom_id>/edit/', views.edit_classroom, name='edit_classroom'),  # Edit classroom
     # path('<int:classroom_id>/delete/', views.delete_classroom, name='delete_classroom'),  # Delete class
