@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ announcement.title }} - ClassConnect{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-r from-purple-50 to-white py-10 px-5">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-custom-purple mb-8">{{ announcement.title }}</h1>
+
+        <div class="bg-white p-8 rounded-xl shadow-lg">
+            <p class="text-gray-600 mb-6">{{ announcement.content }}</p>
+
+            {% if announcement.file %}
+                <a href="{{ announcement.file.url }}" 
+                   class="text-custom-purple hover:underline">Download File</a>
+            {% endif %}
+
+            <div class="mt-6">
+                <p class="text-gray-500 text-sm">Posted by {{ announcement.created_by.username }} on {{ announcement.created_at|date:"M d, Y H:i" }}</p>
+            </div>
+
+            {% if is_creator %}
+                <div class="flex justify-end space-x-4 mt-6">
+                    <a href="{% url 'edit_announcement' announcement.id %}" 
+                       class="bg-custom-purple text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition shadow-md">
+                        Edit Announcement
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

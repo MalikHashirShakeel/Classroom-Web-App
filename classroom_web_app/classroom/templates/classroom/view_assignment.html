@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ assignment.title }} - ClassConnect{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-r from-purple-50 to-white py-10 px-5">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-custom-purple mb-8">{{ assignment.title }}</h1>
+
+        <div class="bg-white p-8 rounded-xl shadow-lg">
+            <p class="text-gray-600 mb-6">{{ assignment.description }}</p>
+
+            {% if assignment.file %}
+                <a href="{{ assignment.file.url }}" 
+                   class="text-custom-purple hover:underline">Download Assignment File</a>
+            {% endif %}
+
+            <div class="mt-6">
+                <p class="text-gray-500 text-sm">Posted by {{ assignment.created_by.username }} on {{ assignment.created_at|date:"M d, Y H:i" }}</p>
+                <p class="text-gray-500 text-sm">Due: {{ assignment.due_date|date:"M d, Y H:i" }}</p>
+            </div>
+
+            {% if is_creator %}
+                <div class="flex justify-end space-x-4 mt-6">
+                    <a href="{% url 'edit_assignment' assignment.id %}" 
+                       class="bg-custom-purple text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition shadow-md">
+                        Edit Assignment
+                    </a>
+                </div>
+            {% else %}
+                <div class="flex justify-end space-x-4 mt-6">
+                    <a href="{% url 'submit_assignment' assignment.id %}" 
+                       class="bg-custom-purple text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition shadow-md">
+                        Submit Assignment
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

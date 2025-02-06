@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Submit Assignment - ClassConnect{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-r from-purple-50 to-white py-10 px-5">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-custom-purple mb-8">Submit Assignment</h1>
+
+        <div class="bg-white p-8 rounded-xl shadow-lg">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-6">
+                    <label for="file" class="block text-gray-700 font-semibold mb-2">Upload Your File</label>
+                    <input type="file" name="file" id="file" 
+                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-purple" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" 
+                            class="bg-custom-purple text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition shadow-md">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

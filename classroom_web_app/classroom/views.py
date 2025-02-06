@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Classroom, Enrollment, Announcement, Assignment
+from .models import Classroom, Enrollment, Announcement, Assignment, Submission
 from .forms import ClassroomForm, AnnouncementForm, AssignmentForm
 from django.contrib import messages
 
@@ -134,3 +134,94 @@ def delete_assignment(request, assignment_id):
     if assignment.created_by == request.user:
         assignment.delete()
     return redirect('classroom_detail', classroom_id=assignment.classroom.id)
+
+#------------------------------------------------------------
+
+@login_required
+def view_announcement(request, announcement_id):
+    """View to display the full details of an announcement."""
+    announcement = get_object_or_404(Announcement, id=announcement_id)
+    is_creator = announcement.created_by == request.user
+
+    context = {
+        'announcement': announcement,
+        'is_creator': is_creator,
+    }
+    return render(request, 'classroom/view_announcement.html', context)
+
+#------------------------------------------------------------
+
+@login_required
+def edit_announcement(request, announcement_id):
+    """View to edit an announcement."""
+    announcement = get_object_or_404(Announcement, id=announcement_id)
+    if announcement.created_by != request.user:
+        return redirect('view_announcement', announcement_id=announcement.id)
+
+    if request.method == 'POST':
+        form = AnnouncementForm(request.POST, request.FILES, instance=announcement)
+        if form.is_valid():
+            form.save()
+            return redirect('view_announcement', announcement_id=announcement.id)
+    else:
+        form = AnnouncementForm(instance=announcement)
+
+    context = {
+        'form': form,
+        'announcement': announcement,
+    }
+    return render(request, 'classroom/edit_announcement.html', context)
+
+#------------------------------------------------------------
+
+@login_required
+def view_assignment(request, assignment_id):
+    """View to display the full details of an assignment."""
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+    is_creator = assignment.created_by == request.user
+
+    context = {
+        'assignment': assignment,
+        'is_creator': is_creator,
+    }
+    return render(request, 'classroom/view_assignment.html', context)
+
+#------------------------------------------------------------
+
+@login_required
+def edit_assignment(request, assignment_id):
+    """View to edit an assignment."""
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+    if assignment.created_by != request.user:
+        return redirect('view_assignment', assignment_id=assignment.id)
+
+    if request.method == 'POST':
+        form = AssignmentForm(request.POST, request.FILES, instance=assignment)
+        if form.is_valid():
+            form.save()
+            return redirect('view_assignment', assignment_id=assignment.id)
+    else:
+        form = AssignmentForm(instance=assignment)
+
+    context = {
+        'form': form,
+        'assignment': assignment,
+    }
+    return render(request, 'classroom/edit_assignment.html', context)
+
+#------------------------------------------------------------
+
+@login_required
+def submit_assignment(request, assignment_id):
+    """View to submit an assignment."""
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+        if file:
+            Submission.objects.create(
+                assignment=assignment,
+                student=request.user,
+                file=file
+            )
+            return redirect('view_assignment', assignment_id=assignment.id)
+    return render(request, 'classroom/submit_assignment.html', {'assignment': assignment})
