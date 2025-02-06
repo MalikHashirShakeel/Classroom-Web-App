@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Classroom, Enrollment
-from .forms import ClassroomForm
+from .models import Classroom, Enrollment, Announcement, Assignment
+from .forms import ClassroomForm, AnnouncementForm, AssignmentForm
 from django.contrib import messages
 
 @login_required
@@ -56,3 +56,81 @@ def join_classroom(request):
             messages.error(request, 'Invalid class code. Please try again.')
 
     return render(request, 'classroom/join_classroom.html')
+
+#-------------------------------------------------------------
+
+
+@login_required
+def classroom_detail(request, classroom_id):
+    """View to display classroom details, announcements, and assignments."""
+    classroom = get_object_or_404(Classroom, id=classroom_id)
+    announcements = Announcement.objects.filter(classroom=classroom).order_by('-created_at')
+    assignments = Assignment.objects.filter(classroom=classroom).order_by('-created_at')
+
+    is_creator = classroom.created_by == request.user
+
+    context = {
+        'classroom': classroom,
+        'announcements': announcements,
+        'assignments': assignments,
+        'is_creator': is_creator,
+    }
+    return render(request, 'classroom/classroom_detail.html', context)
+
+#------------------------------------------------------------
+
+@login_required
+def add_announcement(request, classroom_id):
+    """View to add an announcement to a classroom."""
+    classroom = get_object_or_404(Classroom, id=classroom_id)
+    if request.method == 'POST':
+        form = AnnouncementForm(request.POST, request.FILES)
+        if form.is_valid():
+            announcement = form.save(commit=False)
+            announcement.classroom = classroom
+            announcement.created_by = request.user
+            announcement.save()
+            return redirect('classroom_detail', classroom_id=classroom.id)
+    else:
+        form = AnnouncementForm()
+    context = {
+        'form': form,
+        'classroom': classroom,
+    }
+    return render(request, 'classroom/add_announcement.html', context)
+
+@login_required
+def delete_announcement(request, announcement_id):
+    """View to delete an announcement."""
+    announcement = get_object_or_404(Announcement, id=announcement_id)
+    if announcement.created_by == request.user:
+        announcement.delete()
+    return redirect('classroom_detail', classroom_id=announcement.classroom.id)
+
+@login_required
+def add_assignment(request, classroom_id):
+    """View to add an assignment to a classroom."""
+    classroom = get_object_or_404(Classroom, id=classroom_id)
+    if request.method == 'POST':
+        form = AssignmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            assignment = form.save(commit=False)
+            assignment.classroom = classroom
+            assignment.created_by = request.user
+            assignment.save()
+            return redirect('classroom_detail', classroom_id=classroom.id)
+    else:
+        form = AssignmentForm()
+    context = {
+        'form': form,
+        'classroom': classroom,
+    }
+    return render(request, 'classroom/add_assignment.html', context)
+
+@login_required
+def delete_assignment(request, assignment_id):
+    """View to delete an assignment."""
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+    if assignment.created_by == request.user:
+        assignment.delete()
+    return redirect('classroom_detail', classroom_id=assignment.classroom.id)
