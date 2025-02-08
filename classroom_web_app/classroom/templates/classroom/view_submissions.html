@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Submissions for {{ assignment.title }} - ClassConnect{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-r from-purple-50 to-white py-10 px-5">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-4xl font-bold text-custom-purple mb-8">Submissions for {{ assignment.title }}</h1>
+
+        <!-- Submissions Section -->
+        <div class="mb-10">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Submitted Assignments</h2>
+            {% if submissions %}
+                <div class="grid md:grid-cols-2 gap-6">
+                    {% for submission in submissions %}
+                        <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">{{ submission.student.username }}</h3>
+                            <p class="text-gray-600 mb-4">Submitted on {{ submission.submitted_at|date:"M d, Y H:i" }}</p>
+                            <a href="{{ submission.file.url }}" 
+                               class="text-custom-purple hover:underline">Download Submission</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-gray-500">No submissions yet.</p>
+            {% endif %}
+        </div>
+
+        <!-- Not Submitted Students Section -->
+        <div>
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Students Who Haven't Submitted</h2>
+            {% if not_submitted_students %}
+                <div class="grid md:grid-cols-2 gap-6">
+                    {% for student in not_submitted_students %}
+                        <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">{{ student.username }}</h3>
+                            <p class="text-gray-600">Has not submitted yet.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-gray-500">All students have submitted their assignments.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

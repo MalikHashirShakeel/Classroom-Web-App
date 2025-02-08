@@ -22,8 +22,12 @@
             {% if is_creator %}
                 <div class="flex justify-end space-x-4 mt-6">
                     <a href="{% url 'edit_assignment' assignment.id %}" 
-                       class="bg-custom-purple text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition shadow-md">
+                    class="bg-custom-purple text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition shadow-md">
                         Edit Assignment
+                    </a>
+                    <a href="{% url 'view_submissions' assignment.id %}" 
+                    class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition shadow-md">
+                        View Submissions
                     </a>
                 </div>
             {% else %}

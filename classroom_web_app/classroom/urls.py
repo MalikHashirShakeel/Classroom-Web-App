@@ -17,8 +17,5 @@ urlpatterns = [
     path('assignment/<int:assignment_id>/submit/', views.submit_assignment, name='submit_assignment'),  # Submit assignmen
     path('submission/<int:submission_id>/edit/', views.edit_submission, name='edit_submission'),  # Edit submission
     path('submission/<int:submission_id>/cancel/', views.cancel_submission, name='cancel_submission'),  # Cancel submission
-    # path('<int:classroom_id>/edit/', views.edit_classroom, name='edit_classroom'),  # Edit classroom
-    # path('<int:classroom_id>/delete/', views.delete_classroom, name='delete_classroom'),  # Delete class
-    # path('submission/<int:assignment_id>/', views.submit_assignment, name='submit_assignment'),  # Submit assignment
-    # path('comment/<int:announcement_id>/', views.add_comment, name='add_comment'),  #Add comment
+    path('assignment/<int:assignment_id>/submissions/', views.view_submissions, name='view_submissions'),
 ]

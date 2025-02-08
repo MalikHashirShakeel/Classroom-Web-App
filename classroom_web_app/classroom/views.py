@@ -4,6 +4,7 @@ from .models import Classroom, Enrollment, Announcement, Assignment, Submission
 from .forms import ClassroomForm, AnnouncementForm, AssignmentForm
 from django.contrib import messages
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 @login_required
 def classroom_list(request):
@@ -259,3 +260,26 @@ def cancel_submission(request, submission_id):
 
     submission.delete()
     return redirect('view_assignment', assignment_id=submission.assignment.id)
+
+#------------------------------------------------------------
+
+@login_required
+def view_submissions(request, assignment_id):
+    """View to display all submissions for an assignment and list students who haven't submitted."""
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+    if assignment.created_by != request.user:
+        return redirect('view_assignment', assignment_id=assignment.id)
+    
+    submissions = Submission.objects.filter(assignment=assignment)
+
+    enrolled_students = User.objects.filter(enrollment__classroom=assignment.classroom)
+
+    submitted_students = submissions.values_list('student', flat=True)
+    not_submitted_students = enrolled_students.exclude(id__in=submitted_students)
+
+    context = {
+        'assignment': assignment,
+        'submissions': submissions,
+        'not_submitted_students': not_submitted_students,
+    }
+    return render(request, 'classroom/view_submissions.html', context)
