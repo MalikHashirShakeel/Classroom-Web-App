@@ -41,7 +41,12 @@ class Submission(models.Model):
 
 class Comment(models.Model):
     content = models.TextField()
-    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, null=True, blank=True)
-    announcement = models.ForeignKey(Announcement, on_delete=models.CASCADE, null=True, blank=True)
+    assignment = models.ForeignKey('Assignment', on_delete=models.CASCADE, null=True, blank=True)
+    announcement = models.ForeignKey('Announcement', on_delete=models.CASCADE, null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_private = models.BooleanField(default=False)  # Private comments visibility
+    parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)  # For replies
+
+    def __str__(self):
+        return f"{self.created_by.username}: {self.content[:30]}"

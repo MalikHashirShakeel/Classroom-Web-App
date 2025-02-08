@@ -32,11 +32,12 @@ class SubmissionAdmin(admin.ModelAdmin):
     search_fields = ('assignment__title', 'student__username')
     list_filter = ('submitted_at',)
 
-# Comment Admin
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('content', 'created_by', 'assignment', 'announcement', 'created_at')
+    list_display = ('content', 'created_by', 'assignment', 'announcement', 'is_private', 'created_at')
     search_fields = ('content', 'created_by__username', 'assignment__title', 'announcement__title')
-    list_filter = ('created_at',)
+    list_filter = ('created_at', 'is_private')
+    ordering = ('-created_at',)
+    list_display_links = ('content',)
 
 # Register Models
 admin.site.register(Classroom, ClassroomAdmin)
