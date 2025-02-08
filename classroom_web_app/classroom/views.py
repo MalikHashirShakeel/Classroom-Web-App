@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Classroom, Enrollment, Announcement, Assignment, Submission
 from .forms import ClassroomForm, AnnouncementForm, AssignmentForm
 from django.contrib import messages
+from django.utils import timezone
 
 @login_required
 def classroom_list(request):
@@ -179,10 +180,14 @@ def view_assignment(request, assignment_id):
     """View to display the full details of an assignment."""
     assignment = get_object_or_404(Assignment, id=assignment_id)
     is_creator = assignment.created_by == request.user
+    is_due_date_passed = timezone.now() > assignment.due_date
+    submission = Submission.objects.filter(assignment=assignment, student=request.user).first()
 
     context = {
         'assignment': assignment,
         'is_creator': is_creator,
+        'is_due_date_passed': is_due_date_passed,
+        'submission': submission,
     }
     return render(request, 'classroom/view_assignment.html', context)
 
@@ -225,3 +230,32 @@ def submit_assignment(request, assignment_id):
             )
             return redirect('view_assignment', assignment_id=assignment.id)
     return render(request, 'classroom/submit_assignment.html', {'assignment': assignment})
+
+#------------------------------------------------------------
+
+@login_required
+def edit_submission(request, submission_id):
+    """View to edit a submission."""
+    submission = get_object_or_404(Submission, id=submission_id)
+    if submission.student != request.user:
+        return redirect('view_assignment', assignment_id=submission.assignment.id)
+
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+        if file:
+            submission.file = file
+            submission.save()
+            return redirect('view_assignment', assignment_id=submission.assignment.id)
+    return render(request, 'classroom/edit_submission.html', {'submission': submission})
+
+#------------------------------------------------------------
+
+@login_required
+def cancel_submission(request, submission_id):
+    """View to cancel a submission."""
+    submission = get_object_or_404(Submission, id=submission_id)
+    if submission.student != request.user:
+        return redirect('view_assignment', assignment_id=submission.assignment.id)
+
+    submission.delete()
+    return redirect('view_assignment', assignment_id=submission.assignment.id)
