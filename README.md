@@ -33,18 +33,18 @@ Make sure you have Python installed. Then activate the virtual environment:
   source venv/bin/activate
   ```
 
-### **3. Navigate to Project Directory**
-Move into the Django project folder:
-
-```bash
-cd classroom_web_app
-```
-
-### **4. Install Dependencies**
+### **3. Install Dependencies**
 Run the following command to install required packages:
 
 ```bash
 pip install -r requirements.txt
+```
+
+### **4. Navigate to Project Directory**
+Move into the Django project folder:
+
+```bash
+cd classroom_web_app
 ```
 
 ### **5. Run Migrations**
