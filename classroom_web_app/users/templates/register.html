@@ -4,7 +4,7 @@
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-50 to-white">
     <div class="bg-white shadow-xl rounded-lg p-8 w-full max-w-md">
         <h2 class="text-3xl font-bold text-custom-purple mb-6 text-center">Create Your Account</h2>
-        
+
         <!-- Display error messages -->
         {% if messages %}
         <div class="mb-4">
@@ -15,7 +15,25 @@
             {% endfor %}
         </div>
         {% endif %}
-        
+
+        <!-- Security Instructions -->
+        <div class="p-3 mb-4 bg-blue-100 text-blue-800 rounded-md">
+            <h4 class="font-semibold">Security Guidelines:</h4>
+            <ul class="list-disc ml-5 text-sm">
+                <li>Username must be at least 4 characters long and contain only letters, numbers, or underscores.</li>
+                <li>Email must be in a valid format (e.g., user@example.com).</li>
+                <li>Password must be at least 8 characters long and include:
+                    <ul class="list-disc ml-4">
+                        <li>One uppercase letter</li>
+                        <li>One lowercase letter</li>
+                        <li>One number</li>
+                        <li>One special character (!@#$%^&*()-_=+)</li>
+                    </ul>
+                </li>
+                <li>Never share your password with anyone.</li>
+            </ul>
+        </div>
+
         <form method="post" class="space-y-6">
             {% csrf_token %}
             <div>
@@ -49,7 +67,7 @@
             <p class="text-sm text-gray-600">Already have an account?
                 <a href="{% url 'login' %}" class="font-medium text-custom-purple hover:text-purple-700">Login here</a>
             </p>
-        </div> 
+        </div>
     </div>
 </div>
 {% endblock %}
