@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Add Student - ClassConnect{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-r from-purple-50 to-white py-10 px-5">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-custom-purple mb-8">Add Student to {{ classroom.name }}</h1>
+
+        <div class="bg-white p-8 rounded-xl shadow-lg">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-6">
+                    <label for="email" class="block text-gray-700 font-semibold mb-2">Student's Email</label>
+                    <input type="email" name="email" id="email" 
+                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-purple" 
+                           placeholder="Enter student's email" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" 
+                            class="bg-custom-purple text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition shadow-md">
+                        Add Student
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Display Messages -->
+{% if messages %}
+    <div class="fixed top-4 right-4 z-50 space-y-2">
+        {% for message in messages %}
+            <div class="px-6 py-3 rounded-lg shadow-md text-white 
+                        {% if message.tags == 'success' %}bg-green-500{% endif %}
+                        {% if message.tags == 'error' %}bg-red-500{% endif %}
+                        {% if message.tags == 'warning' %}bg-yellow-500{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

@@ -373,3 +373,27 @@ def delete_student(request, classroom_id, student_id):
     Submission.objects.filter(student=student, assignment__classroom=classroom).delete()  # Delete assignment submissions
 
     return redirect('view_students', classroom_id=classroom.id)
+
+#-------------------------------------------------------------
+
+@login_required
+def add_student(request, classroom_id):
+    """View to add a student to the classroom by email."""
+    classroom = get_object_or_404(Classroom, id=classroom_id)
+    if classroom.created_by != request.user:
+        return redirect('classroom_detail', classroom_id=classroom.id)
+
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            student = User.objects.get(email=email)
+            # Check if the student is already enrolled
+            if not Enrollment.objects.filter(classroom=classroom, student=student).exists():
+                Enrollment.objects.create(classroom=classroom, student=student)
+                messages.success(request, f'{student.username} has been added to the classroom.')
+            else:
+                messages.warning(request, f'{student.username} is already enrolled in this classroom.')
+        except User.DoesNotExist:
+            messages.error(request, 'No user found with this email.')
+
+    return render(request, 'classroom/add_student.html', {'classroom': classroom})

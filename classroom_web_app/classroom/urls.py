@@ -22,4 +22,5 @@ urlpatterns = [
     path('comment/<int:comment_id>/reply/', views.add_reply, name='add_reply'),  # Add reply
     path('<int:classroom_id>/students/', views.view_students, name='view_students'),  # View all students
     path('<int:classroom_id>/students/<int:student_id>/delete/', views.delete_student, name='delete_student'),  # Delete student
+    path('<int:classroom_id>/add-student/', views.add_student, name='add_student'),  # Add student by email
 ]
