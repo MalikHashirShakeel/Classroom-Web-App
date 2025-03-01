@@ -335,3 +335,41 @@ def add_reply(request, comment_id):
         elif parent_comment.assignment:
             return redirect('view_comments', object_type='assignment', object_id=parent_comment.assignment.id)
     return redirect('classroom_list')
+
+#------------------------------------------------------------
+
+@login_required
+def view_students(request, classroom_id):
+    """View to display all students enrolled in a classroom."""
+    classroom = get_object_or_404(Classroom, id=classroom_id)
+    if classroom.created_by != request.user:
+        return redirect('classroom_detail', classroom_id=classroom.id)
+
+    # Get all students enrolled in the classroom
+    enrollments = Enrollment.objects.filter(classroom=classroom)
+    students = [enrollment.student for enrollment in enrollments]
+
+    context = {
+        'classroom': classroom,
+        'students': students,
+    }
+    return render(request, 'classroom/view_students.html', context)
+
+#------------------------------------------------------------
+
+@login_required
+def delete_student(request, classroom_id, student_id):
+    """View to delete a student from the classroom and all their related data."""
+    classroom = get_object_or_404(Classroom, id=classroom_id)
+    if classroom.created_by != request.user:
+        return redirect('classroom_detail', classroom_id=classroom.id)
+
+    student = get_object_or_404(User, id=student_id)
+
+    # Delete all related data for the student in this classroom
+    Enrollment.objects.filter(classroom=classroom, student=student).delete()  # Remove enrollment
+    Comment.objects.filter(created_by=student, announcement__classroom=classroom).delete()  # Delete comments on announcements
+    Comment.objects.filter(created_by=student, assignment__classroom=classroom).delete()  # Delete comments on assignments
+    Submission.objects.filter(student=student, assignment__classroom=classroom).delete()  # Delete assignment submissions
+
+    return redirect('view_students', classroom_id=classroom.id)

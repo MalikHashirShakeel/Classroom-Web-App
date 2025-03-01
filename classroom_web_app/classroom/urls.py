@@ -20,4 +20,6 @@ urlpatterns = [
     path('assignment/<int:assignment_id>/submissions/', views.view_submissions, name='view_submissions'),
     path('<str:object_type>/<int:object_id>/comments/', views.view_comments, name='view_comments'),  # View comments
     path('comment/<int:comment_id>/reply/', views.add_reply, name='add_reply'),  # Add reply
+    path('<int:classroom_id>/students/', views.view_students, name='view_students'),  # View all students
+    path('<int:classroom_id>/students/<int:student_id>/delete/', views.delete_student, name='delete_student'),  # Delete student
 ]
