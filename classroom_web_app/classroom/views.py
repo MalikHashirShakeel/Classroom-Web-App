@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Classroom, Enrollment, Announcement, Assignment, Submission
+from .models import Classroom, Enrollment, Announcement, Assignment, Submission, Comment
 from .forms import ClassroomForm, AnnouncementForm, AssignmentForm
 from django.contrib import messages
 from django.utils import timezone
@@ -283,3 +283,55 @@ def view_submissions(request, assignment_id):
         'not_submitted_students': not_submitted_students,
     }
     return render(request, 'classroom/view_submissions.html', context)
+
+#------------------------------------------------------------
+
+@login_required
+def view_comments(request, object_type, object_id):
+    """View to display all comments for an announcement or assignment."""
+    if object_type == 'announcement':
+        obj = get_object_or_404(Announcement, id=object_id)
+        comments = Comment.objects.filter(announcement=obj, parent_comment__isnull=True)  # Only top-level comments
+    elif object_type == 'assignment':
+        obj = get_object_or_404(Assignment, id=object_id)
+        comments = Comment.objects.filter(assignment=obj, parent_comment__isnull=True)  # Only top-level comments
+    else:
+        return redirect('classroom_list')
+
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        Comment.objects.create(
+            content=content,
+            announcement=obj if object_type == 'announcement' else None,
+            assignment=obj if object_type == 'assignment' else None,
+            created_by=request.user
+        )
+        return redirect('view_comments', object_type=object_type, object_id=object_id)
+
+    context = {
+        'object': obj,
+        'comments': comments,
+        'object_type': object_type,
+    }
+    return render(request, 'classroom/view_comments.html', context)
+
+#------------------------------------------------------------
+
+@login_required
+def add_reply(request, comment_id):
+    """View to add a reply to a comment."""
+    parent_comment = get_object_or_404(Comment, id=comment_id)
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        Comment.objects.create(
+            content=content,
+            announcement=parent_comment.announcement,
+            assignment=parent_comment.assignment,
+            created_by=request.user,
+            parent_comment=parent_comment
+        )
+        if parent_comment.announcement:
+            return redirect('view_comments', object_type='announcement', object_id=parent_comment.announcement.id)
+        elif parent_comment.assignment:
+            return redirect('view_comments', object_type='assignment', object_id=parent_comment.assignment.id)
+    return redirect('classroom_list')

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Comments - ClassConnect{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-r from-purple-50 to-white py-10 px-5">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-custom-purple mb-8">Comments on {{ object.title }}</h1>
+
+        <div class="bg-white p-8 rounded-xl shadow-lg">
+            <!-- Add Comment Form -->
+            <form method="post" class="mb-8">
+                {% csrf_token %}
+                <textarea name="content" rows="3" 
+                          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-purple" 
+                          placeholder="Write a comment..." required></textarea>
+                <button type="submit" 
+                        class="bg-custom-purple text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition shadow-md mt-4">
+                    Add Comment
+                </button>
+            </form>
+
+            <!-- Display Comments -->
+            {% if comments %}
+                <div class="space-y-6">
+                    {% for comment in comments %}
+                        <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+                            <p class="text-gray-800">{{ comment.content }}</p>
+                            <p class="text-gray-500 text-sm mt-2">
+                                By {{ comment.created_by.username }} on {{ comment.created_at|date:"M d, Y H:i" }}
+                            </p>
+
+                            <!-- Reply Form -->
+                            <form method="post" action="{% url 'add_reply' comment.id %}" class="mt-4">
+                                {% csrf_token %}
+                                <textarea name="content" rows="2" 
+                                          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-purple" 
+                                          placeholder="Write a reply..." required></textarea>
+                                <button type="submit" 
+                                        class="bg-custom-purple text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition shadow-md mt-2">
+                                    Reply
+                                </button>
+                            </form>
+
+                            <!-- Display Replies -->
+                            {% for reply in comment.comment_set.all %}
+                                <div class="ml-8 mt-4">
+                                    <p class="text-gray-800">{{ reply.content }}</p>
+                                    <p class="text-gray-500 text-sm mt-2">
+                                        By {{ reply.created_by.username }} on {{ reply.created_at|date:"M d, Y H:i" }}
+                                    </p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-gray-500">No comments yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

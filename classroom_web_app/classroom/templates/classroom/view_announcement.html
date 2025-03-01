@@ -18,14 +18,13 @@
                 <p class="text-gray-500 text-sm">Posted by {{ announcement.created_by.username }} on {{ announcement.created_at|date:"M d, Y H:i" }}</p>
             </div>
 
-            {% if is_creator %}
-                <div class="flex justify-end space-x-4 mt-6">
-                    <a href="{% url 'edit_announcement' announcement.id %}" 
-                       class="bg-custom-purple text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition shadow-md">
-                        Edit Announcement
-                    </a>
-                </div>
-            {% endif %}
+            <!-- View Comments Button -->
+            <div class="mt-6">
+                <a href="{% url 'view_comments' 'announcement' announcement.id %}" 
+                   class="bg-custom-purple text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition shadow-md">
+                    View Comments
+                </a>
+            </div>
         </div>
     </div>
 </div>

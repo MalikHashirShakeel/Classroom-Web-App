@@ -60,7 +60,16 @@
                     {% endif %}
                 </div>
             {% endif %}
+            
+            <!-- View Comments Button -->
+            <div class="mt-6">
+                <a href="{% url 'view_comments' 'assignment' assignment.id %}" 
+                   class="bg-custom-purple text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition shadow-md">
+                    View Comments
+                </a>
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
+

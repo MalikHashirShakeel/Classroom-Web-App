@@ -18,4 +18,6 @@ urlpatterns = [
     path('submission/<int:submission_id>/edit/', views.edit_submission, name='edit_submission'),  # Edit submission
     path('submission/<int:submission_id>/cancel/', views.cancel_submission, name='cancel_submission'),  # Cancel submission
     path('assignment/<int:assignment_id>/submissions/', views.view_submissions, name='view_submissions'),
+    path('<str:object_type>/<int:object_id>/comments/', views.view_comments, name='view_comments'),  # View comments
+    path('comment/<int:comment_id>/reply/', views.add_reply, name='add_reply'),  # Add reply
 ]
