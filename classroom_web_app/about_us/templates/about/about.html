@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}About Us - ClassConnect{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-r from-purple-50 to-white py-12 px-5">
+    <div class="max-w-4xl mx-auto">
+        <!-- App Details -->
+        <h1 class="text-5xl font-bold text-custom-purple mb-10 text-center">About ClassConnect</h1>
+        <div class="bg-white p-10 rounded-xl shadow-2xl mb-12 transform transition duration-500 hover:scale-105">
+            <p class="text-gray-700 mb-6 text-lg leading-relaxed">
+                ClassConnect is a modern classroom management app designed to streamline communication between teachers and students. 
+                It provides features like announcements, assignments, submissions, and comments to make learning more interactive and efficient.
+            </p>
+            <p class="text-gray-700 text-lg leading-relaxed">
+                Whether you're a teacher managing a classroom or a student keeping track of tasks, ClassConnect has you covered!
+            </p>
+        </div>
+
+        <!-- Developer Details -->
+        <h2 class="text-4xl font-bold text-custom-purple mb-10 text-center">About the Developer</h2>
+        <div class="bg-white p-10 rounded-xl shadow-2xl mb-12 transform transition duration-500 hover:scale-105">
+            <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+                <!-- Developer Picture -->
+                <img src="{% static 'images/my_photo.jpg' %}" alt="Malik Hashir Shakeel" 
+                     class="w-40 h-40 rounded-full border-4 border-custom-purple shadow-lg">
+                <div class="text-center md:text-left">
+                    <h3 class="text-3xl font-bold text-gray-800">Malik Hashir Shakeel</h3>
+                    <p class="text-gray-700 mt-2">Computer and Information Systems Engineering Student</p>
+                    <p class="text-gray-700">NED University of Engineering and Technology</p>
+                </div>
+            </div>
+
+            <!-- Social Media Links -->
+            <div class="mt-8 flex justify-center md:justify-start space-x-6">
+                <a href="https://www.linkedin.com/in/malik-hashir-53a15a294/" target="_blank" 
+                   class="text-gray-600 hover:text-blue-700 transition transform hover:scale-110">
+                    <i class="fab fa-linkedin fa-2x"></i>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100077438779105" target="_blank" 
+                   class="text-gray-600 hover:text-blue-600 transition transform hover:scale-110">
+                    <i class="fab fa-facebook fa-2x"></i>
+                </a>
+                <a href="https://www.instagram.com/itsmalikhashir/" target="_blank" 
+                   class="text-gray-600 hover:text-pink-600 transition transform hover:scale-110">
+                    <i class="fab fa-instagram fa-2x"></i>
+                </a>
+            </div>
+
+            <!-- Portfolio Link -->
+            <div class="mt-8 text-center md:text-left">
+                <a href="https://malik-hashir-portfolio.vercel.app/" target="_blank" 
+                   class="text-custom-purple hover:underline font-semibold text-lg">View My Portfolio</a>
+            </div>
+        </div>
+
+        <!-- Message Section -->
+        <h2 class="text-4xl font-bold text-custom-purple mb-10 text-center">Leave a Message</h2>
+        <div class="bg-white p-10 rounded-xl shadow-2xl transform transition duration-500 hover:scale-105">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-8">
+                    <label for="name" class="block text-gray-700 font-semibold mb-3">Your Name</label>
+                    <input type="text" name="name" id="name" 
+                           class="w-full px-5 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-purple focus:border-transparent" 
+                           placeholder="Enter your name" required>
+                </div>
+                <div class="mb-8">
+                    <label for="email" class="block text-gray-700 font-semibold mb-3">Your Email</label>
+                    <input type="email" name="email" id="email" 
+                           class="w-full px-5 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-purple focus:border-transparent" 
+                           placeholder="Enter your email" required>
+                </div>
+                <div class="mb-8">
+                    <label for="message" class="block text-gray-700 font-semibold mb-3">Your Message</label>
+                    <textarea name="message" id="message" rows="5" 
+                              class="w-full px-5 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-purple focus:border-transparent" 
+                              placeholder="Write your message here..." required></textarea>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" 
+                            class="bg-custom-purple text-white px-8 py-4 rounded-lg hover:bg-purple-700 transition transform hover:scale-105 shadow-lg">
+                        Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome for Icons -->
+<script src="https://kit.fontawesome.com/4d129158f7.js" crossorigin="anonymous"></script>
+
+<!-- Display Messages -->
+{% if messages %}
+    <div class="fixed top-4 right-4 z-50 space-y-2">
+        {% for message in messages %}
+            <div class="px-8 py-4 rounded-lg shadow-md text-white 
+                        {% if message.tags == 'success' %}bg-green-500{% endif %}
+                        {% if message.tags == 'error' %}bg-red-500{% endif %}
+                        {% if message.tags == 'warning' %}bg-yellow-500{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}
