@@ -5,6 +5,8 @@ from .forms import ClassroomForm, AnnouncementForm, AssignmentForm
 from django.contrib import messages
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.utils import timezone
+from datetime import timedelta
 
 @login_required
 def classroom_list(request):
@@ -61,21 +63,50 @@ def join_classroom(request):
 
 #-------------------------------------------------------------
 
-
 @login_required
 def classroom_detail(request, classroom_id):
-    """View to display classroom details, announcements, and assignments."""
+    """View to display classroom details and pending/missed tasks for students."""
     classroom = get_object_or_404(Classroom, id=classroom_id)
+    is_creator = classroom.created_by == request.user
+
+    # Get all announcements and assignments for the classroom
     announcements = Announcement.objects.filter(classroom=classroom).order_by('-created_at')
     assignments = Assignment.objects.filter(classroom=classroom).order_by('-created_at')
 
-    is_creator = classroom.created_by == request.user
+    # For students, calculate pending and missed tasks
+    pending_tasks = []
+    missed_tasks = []
+    if not is_creator:
+        now = timezone.now()
+        for assignment in assignments:
+            if assignment.due_date > now:  # Assignment is pending
+                time_left = assignment.due_date - now
+                if time_left <= timedelta(days=1):  # Due tomorrow or sooner
+                    urgency = 'red'
+                elif time_left <= timedelta(days=3):  # Due in 3 days
+                    urgency = 'orange'
+                else:  # Due in more than 3 days
+                    urgency = 'green'
+                pending_tasks.append({
+                    'type': 'assignment',
+                    'title': assignment.title,
+                    'due_date': assignment.due_date,
+                    'urgency': urgency,
+                })
+            else:  # Assignment is missed
+                missed_tasks.append({
+                    'type': 'assignment',
+                    'title': assignment.title,
+                    'due_date': assignment.due_date,
+                })
 
     context = {
         'classroom': classroom,
+        'is_creator': is_creator,
         'announcements': announcements,
         'assignments': assignments,
-        'is_creator': is_creator,
+        'pending_tasks': pending_tasks,
+        'missed_tasks': missed_tasks,
     }
     return render(request, 'classroom/classroom_detail.html', context)
 
