@@ -23,4 +23,6 @@ urlpatterns = [
     path('<int:classroom_id>/students/', views.view_students, name='view_students'),  # View all students
     path('<int:classroom_id>/students/<int:student_id>/delete/', views.delete_student, name='delete_student'),  # Delete student
     path('<int:classroom_id>/add-student/', views.add_student, name='add_student'),  # Add student by email
+    path('<int:classroom_id>/delete/', views.delete_classroom, name='delete_classroom'),  # Delete classroom
+    path('<int:classroom_id>/leave/', views.leave_classroom, name='leave_classroom'),  # Leave classroom
 ]

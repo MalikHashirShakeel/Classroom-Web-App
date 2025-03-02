@@ -428,3 +428,32 @@ def add_student(request, classroom_id):
             messages.error(request, 'No user found with this email.')
 
     return render(request, 'classroom/add_student.html', {'classroom': classroom})
+
+#------------------------------------------------------------
+
+@login_required
+def delete_classroom(request, classroom_id):
+    """View to delete a classroom and all its related data."""
+    classroom = get_object_or_404(Classroom, id=classroom_id)
+    if classroom.created_by != request.user:
+        return redirect('classroom_list')  # Redirect if the user is not the creator
+
+    if request.method == 'POST':
+        
+        classroom.delete()
+        return redirect('classroom_list') 
+
+    return redirect('classroom_detail', classroom_id=classroom.id)
+
+#------------------------------------------------------------
+
+@login_required
+def leave_classroom(request, classroom_id):
+    """View for a student to leave a classroom."""
+    classroom = get_object_or_404(Classroom, id=classroom_id)
+    if request.method == 'POST':
+        # Remove the student from the classroom
+        Enrollment.objects.filter(classroom=classroom, student=request.user).delete()
+        return redirect('classroom_list')  # Redirect to the classroom list after leaving
+
+    return redirect('classroom_detail', classroom_id=classroom.id)
