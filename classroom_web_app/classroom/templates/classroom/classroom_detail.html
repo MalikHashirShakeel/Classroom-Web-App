@@ -116,17 +116,22 @@
                     {% for announcement in announcements %}
                         <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all">
                             <h3 class="text-xl font-bold text-gray-800 mb-2">{{ announcement.title }}</h3>
-                            <p class="text-gray-600 mb-4">{{ announcement.content }}</p>
+                            <p class="text-gray-600 mb-4">
+                                {{ announcement.content|truncatechars:100 }} 
+                                {% if announcement.content|length > 100 %}
+                                    <a href="{% url 'view_announcement' announcement.id %}" class="text-custom-purple hover:text-purple-700">View</a>
+                                {% endif %}
+                            </p>
                             {% if announcement.file %}
                                 <a href="{{ announcement.file.url }}" 
-                                   class="text-custom-purple hover:underline">Download File</a>
+                                class="text-custom-purple hover:underline">Download File</a>
                             {% endif %}
                             <div class="flex justify-end space-x-4 mt-4">
-                                <a href="{% url 'view_announcement' announcement.id %}"
-                                   class="text-custom-purple hover:text-purple-700">View</a>
+                                <a href="{% url 'view_announcement' announcement.id %}" 
+                                class="text-custom-purple hover:text-purple-700">View</a>
                                 {% if is_creator %}
                                     <a href="{% url 'delete_announcement' announcement.id %}" 
-                                       class="text-red-500 hover:text-red-700">Delete</a>
+                                    class="text-red-500 hover:text-red-700">Delete</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -145,18 +150,23 @@
                     {% for assignment in assignments %}
                         <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all">
                             <h3 class="text-xl font-bold text-gray-800 mb-2">{{ assignment.title }}</h3>
-                            <p class="text-gray-600 mb-4">{{ assignment.description }}</p>
+                            <p class="text-gray-600 mb-4">
+                                {{ assignment.description|truncatechars:100 }}
+                                {% if assignment.description|length > 100 %}
+                                    <a href="{% url 'view_assignment' assignment.id %}" class="text-custom-purple hover:text-purple-700">View</a>
+                                {% endif %}
+                            </p>
                             <p class="text-gray-500 text-sm mb-4">Due: {{ assignment.due_date|date:"M d, Y H:i" }}</p>
                             {% if assignment.file %}
                                 <a href="{{ assignment.file.url }}" 
-                                   class="text-custom-purple hover:underline">Download File</a>
+                                class="text-custom-purple hover:underline">Download File</a>
                             {% endif %}
                             <div class="flex justify-end space-x-4 mt-4">
                                 <a href="{% url 'view_assignment' assignment.id %}" 
-                                   class="text-custom-purple hover:text-purple-700">View</a>
+                                class="text-custom-purple hover:text-purple-700">View</a>
                                 {% if is_creator %}
                                     <a href="{% url 'delete_assignment' assignment.id %}" 
-                                       class="text-red-500 hover:text-red-700">Delete</a>
+                                    class="text-red-500 hover:text-red-700">Delete</a>
                                 {% endif %}
                             </div>
                         </div>
