@@ -72,13 +72,18 @@
                                         <h3 class="text-xl font-bold text-gray-800">{{ task.title }}</h3>
                                         <p class="text-gray-600">Due: {{ task.due_date|date:"M d, Y H:i" }}</p>
                                         <p class="text-sm mt-2 
-                                                   {% if task.urgency == 'red' %}text-red-600{% endif %}
-                                                   {% if task.urgency == 'orange' %}text-orange-600{% endif %}
-                                                   {% if task.urgency == 'green' %}text-green-600{% endif %}">
+                                                {% if task.urgency == 'red' %}text-red-600{% endif %}
+                                                {% if task.urgency == 'orange' %}text-orange-600{% endif %}
+                                                {% if task.urgency == 'green' %}text-green-600{% endif %}">
                                             {% if task.urgency == 'red' %}Deadline is tomorrow or sooner!{% endif %}
                                             {% if task.urgency == 'orange' %}Deadline is in 3 days or less.{% endif %}
                                             {% if task.urgency == 'green' %}Deadline is more than 3 days away.{% endif %}
                                         </p>
+                                        <!-- View Task Button -->
+                                        <a href="{% url 'view_assignment' task.id %}" 
+                                        class="mt-4 inline-block bg-custom-purple text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition shadow-md">
+                                            View Task
+                                        </a>
                                     </div>
                                 {% endfor %}
                             </div>
@@ -93,6 +98,11 @@
                                         <h3 class="text-xl font-bold text-gray-800">{{ task.title }}</h3>
                                         <p class="text-gray-600">Due: {{ task.due_date|date:"M d, Y H:i" }}</p>
                                         <p class="text-sm mt-2 text-gray-600">This task is past its deadline.</p>
+                                        <!-- View Task Button -->
+                                        <a href="{% url 'view_assignment' task.id %}" 
+                                        class="mt-4 inline-block bg-custom-purple text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition shadow-md">
+                                            View Task
+                                        </a>
                                     </div>
                                 {% endfor %}
                             </div>

@@ -88,6 +88,7 @@ def classroom_detail(request, classroom_id):
                 else:  # Due in more than 3 days
                     urgency = 'green'
                 pending_tasks.append({
+                    'id' : assignment.id,
                     'type': 'assignment',
                     'title': assignment.title,
                     'due_date': assignment.due_date,
@@ -95,6 +96,7 @@ def classroom_detail(request, classroom_id):
                 })
             else:  # Assignment is missed
                 missed_tasks.append({
+                    'id' : assignment.id,
                     'type': 'assignment',
                     'title': assignment.title,
                     'due_date': assignment.due_date,
