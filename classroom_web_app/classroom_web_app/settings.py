@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'users',
     'core',
     'classroom',
-    'about_us'
+    'about_us',
+    'captcha',
 ]
 
 TAILWIND_APP_NAME = 'theme'

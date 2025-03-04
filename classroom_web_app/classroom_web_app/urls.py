@@ -25,6 +25,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('classroom/', include('classroom.urls')),
     path('about-us/', include('about_us.urls')),
+    path('captcha/', include('captcha.urls')),
 
     path("__reload__/", include("django_browser_reload.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
