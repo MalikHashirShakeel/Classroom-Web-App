@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Tasks - ClassConnect{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Pending Tasks Section -->
+    <h1 class="text-3xl font-bold text-custom-purple mb-8">Pending Tasks</h1>
+    <div class="space-y-4">
+        {% for task in pending_tasks %}
+        <div class="p-6 rounded-lg shadow-md {% if task.urgency == 'green' %}bg-green-100{% elif task.urgency == 'orange' %}bg-yellow-100{% else %}bg-red-100{% endif %}">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800">{{ task.title }}</h2>
+                    <p class="text-gray-600">Due: {{ task.due_date|date:"M d, Y H:i" }}</p>
+                    <p class="text-gray-600">Classroom: {{ task.classroom }}</p>
+                </div>
+                <a href="{% url 'view_assignment' task.id %}" class="bg-custom-purple text-white px-4 py-2 rounded-md hover:bg-purple-700">View</a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-gray-600">No pending tasks.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Missed Tasks Section -->
+    <h1 class="text-3xl font-bold text-custom-purple mt-12 mb-8">Missed Tasks</h1>
+    <div class="space-y-4">
+        {% for task in missed_tasks %}
+        <div class="p-6 rounded-lg shadow-md bg-gray-100">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800">{{ task.title }}</h2>
+                    <p class="text-gray-600">Due: {{ task.due_date|date:"M d, Y H:i" }}</p>
+                    <p class="text-gray-600">Classroom: {{ task.classroom }}</p>
+                </div>
+                <a href="{% url 'view_assignment' task.id %}" class="bg-custom-purple text-white px-4 py-2 rounded-md hover:bg-purple-700">View</a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-gray-600">No missed tasks.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

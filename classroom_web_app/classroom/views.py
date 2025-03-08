@@ -459,3 +459,48 @@ def leave_classroom(request, classroom_id):
         return redirect('classroom_list')  # Redirect to the classroom list after leaving
 
     return redirect('classroom_detail', classroom_id=classroom.id)
+
+#------------------------------------------------------------
+
+@login_required
+def task_list(request):
+    """View to display all pending and missed tasks from all classrooms."""
+    # Get all classrooms the user is enrolled in
+    enrolled_classrooms = Classroom.objects.filter(enrollment__student=request.user)
+    
+    # Get all assignments from these classrooms
+    assignments = Assignment.objects.filter(classroom__in=enrolled_classrooms).order_by('due_date')
+    
+    # Calculate urgency for pending tasks and identify missed tasks
+    pending_tasks = []
+    missed_tasks = []
+    now = timezone.now()
+    for assignment in assignments:
+        if assignment.due_date > now:  # Assignment is pending
+            time_left = assignment.due_date - now
+            if time_left <= timedelta(days=1):  # Due tomorrow or sooner
+                urgency = 'red'
+            elif time_left <= timedelta(days=3):  # Due in 3 days
+                urgency = 'orange'
+            else:  # Due in more than 3 days
+                urgency = 'green'
+            pending_tasks.append({
+                'id': assignment.id,
+                'title': assignment.title,
+                'due_date': assignment.due_date,
+                'urgency': urgency,
+                'classroom': assignment.classroom.name,
+            })
+        else:  # Assignment is missed
+            missed_tasks.append({
+                'id': assignment.id,
+                'title': assignment.title,
+                'due_date': assignment.due_date,
+                'classroom': assignment.classroom.name,
+            })
+    
+    context = {
+        'pending_tasks': pending_tasks,
+        'missed_tasks': missed_tasks,
+    }
+    return render(request, 'classroom/task_list.html', context)

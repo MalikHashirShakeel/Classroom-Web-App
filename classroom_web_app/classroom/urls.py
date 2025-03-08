@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.classroom_list, name='classroom_list'),  # View all classrooms
+    path('tasks/', views.task_list, name='task_list'),  # View all tasks
     path('create/', views.create_classroom, name='create_classroom'),  # Create a new class
     path('join/', views.join_classroom, name='join_classroom'),  # Join a classroom
     path('<int:classroom_id>/', views.classroom_detail, name='classroom_detail'),  # View class details

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
@@ -79,3 +79,8 @@ def login_view(request):
         captcha_form = CaptchaTestForm()
 
     return render(request, 'login.html', {'captcha_form': captcha_form})
+
+def user_logout(request):
+    """Log out the user and redirect to the homepage."""
+    logout(request)
+    return redirect('/')  

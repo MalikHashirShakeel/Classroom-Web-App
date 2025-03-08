@@ -33,16 +33,24 @@
                     <a href="/" class="text-2xl font-bold text-custom-purple">ClassConnect</a>
                 </div>
                 <!-- Nav Links -->
-                <div class="hidden md:flex space-x-10">
-                    <a href="/" class="text-gray-700 hover:text-custom-purple">Classrooms</a>
-                    <a href="/tasks/" class="text-gray-700 hover:text-custom-purple">Tasks</a>
-                    <a href="/about/" class="text-gray-700 hover:text-custom-purple">About</a>
-                    <a href="/contact/" class="text-gray-700 hover:text-custom-purple">Contact</a>
-                </div>
+                {% if user.is_authenticated %}
+                    <div class="hidden md:flex space-x-10">
+                        <a href="/classroom/" class="text-gray-700 hover:text-custom-purple">Classrooms</a>
+                        <a href="/classroom/tasks/" class="text-gray-700 hover:text-custom-purple">Tasks</a>
+                        <a href="/about-us/" class="text-gray-700 hover:text-custom-purple">About</a>
+                        <a href="/contact/" class="text-gray-700 hover:text-custom-purple">Contact</a>
+                    </div>
+                {% endif %}
                 <!-- Auth Buttons -->
                 <div class="flex items-center space-x-4">
-                    <a href="/login/" class="text-gray-700 hover:text-custom-purple">Login</a>
-                    <a href="/register/" class="bg-custom-purple text-white px-4 py-2 rounded-md hover:bg-purple-700">Sign Up</a>
+                    {% if user.is_authenticated %}
+                        <!-- Logout Button -->
+                        <a href="/users/logout/" class="bg-custom-purple text-white px-4 py-2 rounded-md hover:bg-purple-700">Logout</a>
+                    {% else %}
+                        <!-- Login and Sign Up Buttons -->
+                        <a href="/users/login/" class="text-gray-700 hover:text-custom-purple">Login</a>
+                        <a href="/users/register/" class="bg-custom-purple text-white px-4 py-2 rounded-md hover:bg-purple-700">Sign Up</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
