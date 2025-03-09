@@ -10,6 +10,8 @@ from django import forms
 class CaptchaTestForm(forms.Form):
     captcha = CaptchaField()
 
+#------------------------------------------------------------
+
 def is_strong_password(password):
     """Check if the password meets security requirements."""
     return (
@@ -57,6 +59,8 @@ def register(request):
 
     return render(request, 'register.html', {'captcha_form': captcha_form})
 
+#------------------------------------------------------------
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username'].strip()
@@ -71,7 +75,12 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, "Login successful!")
-                return redirect('classroom_list')
+
+                # Check if user is a superuser
+                if user.is_superuser:
+                    return redirect('/admin/')  # Redirect to Django admin panel
+
+                return redirect('classroom_list') 
             else:
                 messages.error(request, "Invalid username or password.")
 
@@ -80,7 +89,11 @@ def login_view(request):
 
     return render(request, 'login.html', {'captcha_form': captcha_form})
 
+#------------------------------------------------------------
+
 def user_logout(request):
     """Log out the user and redirect to the homepage."""
     logout(request)
     return redirect('/')  
+
+#------------------------------------------------------------
