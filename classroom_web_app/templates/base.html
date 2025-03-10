@@ -19,37 +19,45 @@
         .hover\:bg-custom-purple:hover {
             background-color: #5B21B6; /* Darker purple on hover */
         }
+        /* Smooth transitions */
+        .transition-all {
+            transition: all 0.3s ease-in-out;
+        }
+        /* Gradient background for navbar */
+        .navbar-gradient {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 100%);
+        }
     </style>
     <script src="https://kit.fontawesome.com/4d129158f7.js" crossorigin="anonymous"></script>
     {% tailwind_css %}
 </head>
 <body class="bg-white text-gray-800">
     <!-- Navbar -->
-    <nav class="bg-white shadow-lg">
+    <nav class="navbar-gradient shadow-lg sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="/" class="text-2xl font-bold text-custom-purple">ClassConnect</a>
+                    <a href="/" class="text-2xl font-bold text-custom-purple transition-all hover:scale-105">ClassConnect</a>
                 </div>
                 <!-- Nav Links -->
                 {% if user.is_authenticated %}
                     <div class="hidden md:flex space-x-10">
-                        <a href="/classroom/" class="text-gray-700 hover:text-custom-purple">Classrooms</a>
-                        <a href="/classroom/tasks/" class="text-gray-700 hover:text-custom-purple">Tasks</a>
-                        <a href="/about-us/" class="text-gray-700 hover:text-custom-purple">About</a>
-                        <a href="/contact/" class="text-gray-700 hover:text-custom-purple">Contact</a>
+                        <a href="/classroom/" class="text-gray-700 hover:text-custom-purple transition-all hover:scale-105">Classrooms</a>
+                        <a href="/classroom/tasks/" class="text-gray-700 hover:text-custom-purple transition-all hover:scale-105">Tasks</a>
+                        <a href="/about-us/" class="text-gray-700 hover:text-custom-purple transition-all hover:scale-105">About</a>
+                        <a href="/contact/" class="text-gray-700 hover:text-custom-purple transition-all hover:scale-105">Contact</a>
                     </div>
                 {% endif %}
                 <!-- Auth Buttons -->
                 <div class="flex items-center space-x-4">
                     {% if user.is_authenticated %}
                         <!-- Logout Button -->
-                        <a href="/users/logout/" class="bg-custom-purple text-white px-4 py-2 rounded-md hover:bg-purple-700">Logout</a>
+                        <a href="/users/logout/" class="bg-custom-purple text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-all hover:scale-105 shadow-lg hover:shadow-xl">Logout</a>
                     {% else %}
                         <!-- Login and Sign Up Buttons -->
-                        <a href="/users/login/" class="text-gray-700 hover:text-custom-purple">Login</a>
-                        <a href="/users/register/" class="bg-custom-purple text-white px-4 py-2 rounded-md hover:bg-purple-700">Sign Up</a>
+                        <a href="/users/login/" class="text-gray-700 hover:text-custom-purple transition-all hover:scale-105">Login</a>
+                        <a href="/users/register/" class="bg-custom-purple text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-all hover:scale-105 shadow-lg hover:shadow-xl">Sign Up</a>
                     {% endif %}
                 </div>
             </div>
@@ -63,9 +71,9 @@
                         {% if message.tags == 'success' %}bg-green-500{% endif %}
                         {% if message.tags == 'error' %}bg-red-500{% endif %}
                         {% if message.tags == 'warning' %}bg-yellow-500{% endif %}
-                        relative">
+                        relative transition-all hover:scale-102">
                 <span>{{ message }}</span>
-                <button onclick="this.parentElement.remove();" class="ml-4 text-xl">&times;</button>
+                <button onclick="this.parentElement.remove();" class="ml-4 text-xl hover:text-gray-300 transition-all">&times;</button>
             </div>
         {% endfor %}
     </div>
